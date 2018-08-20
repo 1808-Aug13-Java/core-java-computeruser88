@@ -316,14 +316,14 @@ public class EvaluationService {
 		public int indexOf(T t) {
 			int low = 0;
 			int high = sortedList.size() - 1;
-			while (low < high) {
-			    int mid = (low / 2) + (high / 2);
+			while (low <= high) {
+			    int mid = (int) Math.floor((low + high) / 2);
 			    try {
 			    	int compareValue = (int) sortedList.get(mid);
 			    	if ((int) t > compareValue) {
-			    		high = mid - 1;
-			    	} else if ((int) t < compareValue) {
 			    		low = mid + 1;
+			    	} else if ((int) t < compareValue) {
+			    		high = mid - 1;
 			    	} else if ((int) t == compareValue) {
 			    		return sortedList.indexOf(t);
 			    	}
@@ -333,9 +333,9 @@ public class EvaluationService {
 			    	int compareValue = Integer.parseInt(compareValueStr);
 			    	int value = Integer.parseInt(valueStr);
 			    	if (value > compareValue) {
-			    		high = mid - 1;
+			    		low = mid - 1;
 			    	} else if (value < compareValue) {
-			    		low = mid + 1;
+			    		high = mid + 1;
 			    	} else if (value == compareValue) {
 			    		return sortedList.indexOf(t);
 			    	}
