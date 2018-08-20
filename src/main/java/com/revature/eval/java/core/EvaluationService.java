@@ -451,9 +451,10 @@ public class EvaluationService {
 		List<Long> primeFactorList = new ArrayList<>();
 		while (l % 2 == 0) {
 			primeFactorList.add(2L);
+			l /= 2;
 	    }
 		for (int i = 3; i < Math.ceil(Math.sqrt(l)); i++) {
-			while(l % i == 0) {
+			if (l % i == 0) {
 				primeFactorList.add((long) i);
 				l /= i;
 			}
