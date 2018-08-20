@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -261,14 +262,13 @@ public class EvaluationService {
 	 */
 
 	public Map<String, Integer> wordCount(String string) {
-		string = string.replace(" ", "");
-		String[] words = string.split("\\W+");
-		Map<String, Integer> wordMap = new HashMap<>();
+		String[] words = string.split("[ ,\n]");
+		Map<String, Integer> wordMap = new LinkedHashMap<>();
 		for (int i = 0; i < words.length; i++) {
-			if (wordMap.containsKey(words[i])) {
+			if (wordMap.containsKey(words[i]) && words[i].length() > 0) {
 				int value = wordMap.get(words[i]);
 				wordMap.replace(words[i], value, ++value);
-			} else {
+			} else if (words[i].length() > 0){
 				wordMap.put(words[i], 1);
 			}
 		}
@@ -718,15 +718,16 @@ public class EvaluationService {
 	public boolean isPangram(String string) {
 		Map<Character, Integer> letters = new HashMap<Character, Integer>();
 		for (int i = 0; i < string.length(); i++) {
-			char ch = (Character) string.charAt(i);
-			if (letters.containsKey(ch)) {
+			char ch = (Character) string.toLowerCase().charAt(i);
+			if (ch != ' ' && letters.containsKey(ch)) {
 				int value = letters.get(ch);
 				letters.replace(ch, value, ++value);
-			} else {
+			} else if (ch != ' ') {
 				letters.put(ch, 1);
 			}
 		}
-		if (letters.size() < 26) {
+		System.out.println(letters);
+		if (letters.size() != 26) {
 			return false;
 		}
 		return true;
@@ -768,15 +769,15 @@ public class EvaluationService {
 	public int getSumOfMultiples(int i, int[] set) {
 		int sum = 0;
 		ArrayList<Integer> products = new ArrayList<>();
-		for (int j = 0; j < set.length; j++) {
-			for (int k = 0; k < set[set.length - 1]; k++) {
-				Integer product = new Integer(set[j] * k);
-				if (set[j] * k < i && !(products.contains(product))) {
+		for (int j = 0; j < set.length - 1; j++) {
+			for (int factor = 1; factor < i; factor++) {
+				Integer product = new Integer(set[j] * factor);
+				if (set[j] * factor < i && !(products.contains(product))) {
 					products.add(product);
 					sum += product;
 				} else {
-					if (set[j] * k >= i) {
-						break;
+					if (set[j] * factor == i) {
+						continue;
 					}
 				}
 			}
@@ -834,14 +835,13 @@ public class EvaluationService {
 			}
 		}
 		for (int i = string.length() - 2; i >= 0; i = i - 2) {
-			int num = Integer.parseInt(string.substring(i));
+			int num = Integer.parseInt(string.substring(i, i + 1));
 			if (num * 2 > 9) {
 				num = num * 2 - 9;
 			} else {
 				num = num * 2;
 			}
 			string = string.substring(0, i) + Integer.toString(num) + string.substring(i + 1);
-			System.out.println(string);
 		}
 		int total = 0;
 		for (int i = 0; i < string.length() - 1; i++) {
