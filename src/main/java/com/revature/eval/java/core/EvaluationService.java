@@ -453,8 +453,8 @@ public class EvaluationService {
 			primeFactorList.add(2L);
 			l /= 2;
 	    }
-		for (int i = 3; i < Math.ceil(Math.sqrt(l)); i++) {
-			if (l % i == 0) {
+		for (int i = 3; i < l; i++) {
+			while (l % i == 0) {
 				primeFactorList.add((long) i);
 				l /= i;
 			}
@@ -726,7 +726,6 @@ public class EvaluationService {
 				letters.put(ch, 1);
 			}
 		}
-		System.out.println(letters);
 		if (letters.size() != 26) {
 			return false;
 		}
@@ -770,14 +769,17 @@ public class EvaluationService {
 		int sum = 0;
 		ArrayList<Integer> products = new ArrayList<>();
 		for (int j = 0; j < set.length - 1; j++) {
-			for (int factor = 1; factor < i; factor++) {
+			for (int factor = 1; factor < i / 2; factor++) {
 				Integer product = new Integer(set[j] * factor);
 				if (set[j] * factor < i && !(products.contains(product))) {
 					products.add(product);
 					sum += product;
+				} else if (set[j] * factor == i){
+					products.add(product);
+					sum += product;
 				} else {
-					if (set[j] * factor == i) {
-						continue;
+					if (set[j] * factor > i) {
+						break;
 					}
 				}
 			}
