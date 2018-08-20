@@ -769,7 +769,7 @@ public class EvaluationService {
 		int sum = 0;
 		ArrayList<Integer> products = new ArrayList<>();
 		for (int j = 0; j < set.length - 1; j++) {
-			for (int factor = 1; factor < i / 2; factor++) {
+			for (int factor = 1; factor < i; factor++) {
 				Integer product = new Integer(set[j] * factor);
 				if (set[j] * factor < i && !(products.contains(product))) {
 					products.add(product);
